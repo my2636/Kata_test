@@ -1,94 +1,68 @@
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
+
 
 public class Main {
     public static void main(String[] args) {
         String input = new Scanner(System.in).nextLine();
-        if (input.matches("\\+|-|\\*|/")){
+        int count = 0;
+        for(char c: input.toCharArray()) {
+            if (Character.isDigit(c)) {
+                count++;
+            }
+        }
+
+        if(count>0) {
             System.out.println(calc(input));
         } else {
-            System.out.println("(");
+            try {
+                String[] nums = getArabic(input);
+            } catch (Exception e) {
+                System.out.println("Exception 1");
+            }
         }
     }
 
     public static String calc(String input) {
         String[] nums = input.split("\\+|-|\\*|/");
-        int a = 0;
-        try{
-           int c = getArabic(nums[0]);
-           int d = getArabic(nums[1]);
-            if(c>0&&c<11&&d>0&&d<11){
-                switch (input){
-                    case "+":
-                        a = c+d;
-                        break;
-                    case "-":
-                        a = c-d;
-                        break;
-                    case "*":
-                        a = c*d;
-                        break;
-                    case "/":
-                        a = c/d;
-                        break;
-                    default:
-                        break;
-                }
-            } else {
-                System.out.println("(((");
-            }
-        } catch (Exception e) {
-            System.out.println("(");
+        String a = "";
+        if (input.contains("+")) {
+            a = Integer.toString(Integer.parseInt(nums[0]) + Integer.parseInt(nums[1]));
+        } else if (input.contains("-")) {
+            a = Integer.toString(Integer.parseInt(nums[0]) - Integer.parseInt(nums[1]));
+        } else if (input.contains("*")) {
+            a = Integer.toString(Integer.parseInt(nums[0]) * Integer.parseInt(nums[1]));
+        } else if (input.contains("/")) {
+            a = Integer.toString(Integer.parseInt(nums[0]) / Integer.parseInt(nums[1]));
         }
-
-        try {
-            int c = Integer.parseInt(nums[0]);
-            int d = Integer.parseInt(nums[1]);
-            if(c>0&&c<11&&d>0&&d<11){
-                switch (input){
-                    case "+":
-                        a = c+d;
-                        break;
-                    case "-":
-                        a = c-d;
-                        break;
-                    case "*":
-                        a = c*d;
-                        break;
-                    case "/":
-                        a = c/d;
-                        break;
-                    default:
-                        break;
-                }
-            } else {
-                System.out.println("(((");
-            }
-        } catch (Exception f) {
-            System.out.println("((");
-        }
-        return Integer.toString(a);
+        return a;
     }
-    static int getArabic(String a){
-        enum Roman {
-            I(1),
-            II(2),
-            III(3),
-            IV(4),
-            V(5),
-            VI(6),
-            VII(7),
-            VIII(8),
-            IX(9),
-            X(10),
-            L(50),
-            C(100);
 
-            private int lable;
-            Roman(int s) {lable = s;}
-            public int getLable() {return lable;}
+    static String[] getArabic(String input) {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("I",1);
+        map.put("II", 2);
+        map.put("III", 3);
+        map.put("IV", 4);
+        map.put("V", 5);
+        map.put("VI", 6);
+        map.put("VII", 7);
+        map.put("VIII", 8);
+        map.put("IX", 9);
+        map.put("X", 10);
+        String[] nums = input.split("\\+|-|\\*|/");
+        try {
+            String a = map.get(nums[0]).toString();
+            String b = map.get(nums[1]).toString();
+            nums[0] = a;
+            nums[1] = b;
+            System.out.println(Arrays.toString(nums));
+        } catch ( NoSuchElementException e) {
+            System.out.println("exception (");
         }
-            int r = Roman.valueOf(a).getLable();
-            System.out.println(r);
-        return r;
+        System.out.println(Arrays.toString(nums));
+        return nums;
     }
 }
