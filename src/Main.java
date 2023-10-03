@@ -7,29 +7,45 @@ public class Main {
     public static void main(String[] args) throws IOException {
         String input = new Scanner(System.in).nextLine();
         int count = 0;
+        int opCount = 0;
         String operator = "";
+        String a = "";
+        String b = "";
         for(char c: input.toCharArray()) {
             if (Character.isDigit(c)) {
                 count++;
             } else if (c == '+') {
                 operator = "+";
+                opCount++;
             } else if (c == '-') {
                 operator = "-";
+                opCount++;
             } else if (c == '*') {
                 operator = "*";
+                opCount++;
             } else if (c == '/') {
                 operator = "/";
+                opCount++;
+            } else {
+                try {
+                    String[] nums = input.split("\\+|-|\\*|/");
+                    a = getArabic(nums[0]);
+                    b = getArabic(nums[1]);
+                } catch (Exception e) {
+                    throw new IOException("The string does not meet the conditions.");
+                }
             }
         }
 
         if(count==1) {
             throw new IOException("The string does not meet the conditions.");
-        } else if(operator=="") {
+        } else if (operator=="") {
             throw new IOException("There is no operator in the line.");
-        }
-        else if(count==input.toCharArray().length-1) {
+        } else if (opCount>1){
+            throw new IOException("There is more than one operator");
+        } else if (count==input.toCharArray().length-1) {
             System.out.println(calc(input));
-        } else if (count==0) {
+        } else if (count==0&&a!=""&&b!="") {
             try {
                 String[] nums = input.split("\\+|-|\\*|/");
                 String[] nums1 = {getArabic(nums[0]), getArabic(nums[1])};
@@ -44,24 +60,24 @@ public class Main {
 
     public static String calc(String input) throws IOException {
         String[] nums = input.split("\\+|-|\\*|/");
-        int a = Integer.parseInt(nums[0]);
-        int b = Integer.parseInt(nums[1]);
-        String c = "";
-        if (a>0&&a<11&&b>0&&b<11){
+        int d = Integer.parseInt(nums[0]);
+        int e = Integer.parseInt(nums[1]);
+        String f = "";
+        if (d>0&&d<11&&e>0&&e<11){
             if (input.contains("+")) {
-                c = Integer.toString(a + b);
+                f = Integer.toString(d + e);
             } else if (input.contains("-")) {
-                c = Integer.toString(a - b);
+                f = Integer.toString(d - e);
             } else if (input.contains("*")) {
-                c = Integer.toString(a * b);
+                f = Integer.toString(d * e);
             } else if (input.contains("/")) {
-                c = Integer.toString(a / b);
+                f = Integer.toString(d / e);
             }
         } else {
             throw new IOException("A number out of range was detected");
         }
 
-        return c;
+        return f;
     }
 
     static String getArabic(String in) {
