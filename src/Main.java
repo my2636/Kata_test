@@ -5,6 +5,9 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        System.out.println("Условия ввода: \nТолько римские или только арабские числа в одну строку без " +
+                "лишних символов, от 1 до 10 включительно. \n1 оператор из 4 допустимых: +-*/, не больше и не меньше." +
+                "\nПервое римское число строго больше второго. ");
         String input = new Scanner(System.in).nextLine();
         int count = 0;
         int opCount = 0;
