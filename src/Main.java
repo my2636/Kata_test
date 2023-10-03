@@ -1,11 +1,10 @@
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String input = new Scanner(System.in).nextLine();
         int count = 0;
         String operator = "";
@@ -23,33 +22,49 @@ public class Main {
             }
         }
 
-        if(count>0) {
+        if(count==1) {
+            throw new IOException("The string does not meet the conditions.");
+        } else if(operator=="") {
+            throw new IOException("There is no operator in the line.");
+        }
+        else if(count==input.toCharArray().length-1) {
             System.out.println(calc(input));
         } else if (count==0) {
             try {
-                System.out.println(calc(getArabic(input, operator)));
+                String[] nums = input.split("\\+|-|\\*|/");
+                String[] nums1 = {getArabic(nums[0]), getArabic(nums[1])};
+                String nums2 = nums1[0] + operator + nums1[1];
+                String calc = calc(nums2);
+                System.out.println(calc);
             } catch (Exception e) {
-                System.out.println("Exception 1");
+                System.out.println("Incorrect numbers format");
             }
         }
     }
 
-    public static String calc(String input) {
+    public static String calc(String input) throws IOException {
         String[] nums = input.split("\\+|-|\\*|/");
-        String a = "";
-        if (input.contains("+")) {
-            a = Integer.toString(Integer.parseInt(nums[0]) + Integer.parseInt(nums[1]));
-        } else if (input.contains("-")) {
-            a = Integer.toString(Integer.parseInt(nums[0]) - Integer.parseInt(nums[1]));
-        } else if (input.contains("*")) {
-            a = Integer.toString(Integer.parseInt(nums[0]) * Integer.parseInt(nums[1]));
-        } else if (input.contains("/")) {
-            a = Integer.toString(Integer.parseInt(nums[0]) / Integer.parseInt(nums[1]));
+        int a = Integer.parseInt(nums[0]);
+        int b = Integer.parseInt(nums[1]);
+        String c = "";
+        if (a>0&&a<11&&b>0&&b<11){
+            if (input.contains("+")) {
+                c = Integer.toString(a + b);
+            } else if (input.contains("-")) {
+                c = Integer.toString(a - b);
+            } else if (input.contains("*")) {
+                c = Integer.toString(a * b);
+            } else if (input.contains("/")) {
+                c = Integer.toString(a / b);
+            }
+        } else {
+            throw new IOException("A number out of range was detected");
         }
-        return a;
+
+        return c;
     }
 
-    static String getArabic(String input, String operator) {
+    static String getArabic(String in) {
         HashMap<String, String> map = new HashMap<>();
         map.put("I","1");
         map.put("II", "2");
@@ -61,15 +76,7 @@ public class Main {
         map.put("VIII", "8");
         map.put("IX", "9");
         map.put("X", "10");
-        String[] nums = input.split("\\+|-|\\*|/");
-        String c = "";
-        try {
-            String a = map.get(nums[0]);
-            String b = map.get(nums[1]);
-            c = a + operator + b;
-        } catch ( NoSuchElementException e) {
-            System.out.println("exception (");
-        }
-        return c;
+
+        return map.get(in);
     }
 }
