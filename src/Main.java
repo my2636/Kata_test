@@ -50,10 +50,14 @@ public class Main {
                 String[] nums = input.split("\\+|-|\\*|/");
                 String[] nums1 = {getArabic(nums[0]), getArabic(nums[1])};
                 String nums2 = nums1[0] + operator + nums1[1];
-                String calc = calc(nums2);
-                System.out.println(calc);
+                String stringCalc = calc(nums2);
+                if (Integer.parseInt(stringCalc)>0&&Integer.parseInt(stringCalc)!=0) {
+                    System.out.println(stringCalc);
+                } else {
+                    throw new IOException("illegal operation with Roman numerals");
+                }
             } catch (Exception e) {
-                System.out.println("Incorrect numbers format");
+                System.out.println("Incorrect numbers format!");
             }
         }
     }
