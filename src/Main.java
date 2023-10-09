@@ -51,7 +51,7 @@ public class Main {
             } else {
                 String st = calc(a+operator+b);
                 int intt = Integer.parseInt(st);
-                if (intt<10||intt%1==0||intt==100) {
+                if (intt<10||intt%10==0||intt==100) {
                     System.out.println(getArabicRoman(st));
                 } else {
                     char[] chars = st.toCharArray();
