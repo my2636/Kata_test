@@ -46,7 +46,7 @@ public class Main {
         }else if (count==input.toCharArray().length-1) {
             System.out.println(calc(input));
         } else if (count==0&&a!=""&&b!="") {
-            if (operator=="-"&&Integer.parseInt(a)<Integer.parseInt(b)) {
+            if (operator=="-"&&Integer.parseInt(a)<Integer.parseInt(b)||operator=="-"&&Integer.parseInt(a)==Integer.parseInt(b)) {
                 throw new IOException("illegal operation with Roman numerals");
             } else {
                 String st = calc(a+operator+b);
