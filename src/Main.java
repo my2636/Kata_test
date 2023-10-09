@@ -5,9 +5,6 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        System.out.println("Условия ввода: \nТолько целые, только римские или только арабские числа в одну строку без " +
-                "лишних символов, от 1 до 10 включительно. \n1 оператор из 4 допустимых: +-*/, не больше и не меньше." +
-                "\nПервое римское число строго больше второго.");
         String input = new Scanner(System.in).nextLine();
         int count = 0;
         int opCount = 0;
@@ -49,22 +46,20 @@ public class Main {
         }else if (count==input.toCharArray().length-1) {
             System.out.println(calc(input));
         } else if (count==0&&a!=""&&b!="") {
-            if (Integer.parseInt(a)>Integer.parseInt(b)) {
-                String st  = calc(a+operator+b);
-                System.out.println(st);
+            if (operator=="-"&&Integer.parseInt(a)<Integer.parseInt(b)||operator=="-"&&Integer.parseInt(a)==Integer.parseInt(b)) {
+                throw new IOException("illegal operation with Roman numerals");
+            } else {
+                String st = calc(a+operator+b);
                 int intt = Integer.parseInt(st);
-                if (intt<10||intt%1==0||intt==100) {
+                if (intt<10||intt%10==0||intt==100) {
                     System.out.println(getArabicRoman(st));
                 } else {
-                    String y = getArabicRoman(Integer.toString(intt-(intt%10)));
-                    System.out.println(y);
-                    String z = getArabicRoman(Integer.toString(intt%10));
-                    System.out.println(z);
-                    System.out.println(y+z);
+                    char[] chars = st.toCharArray();
+                    String s1 = getArabicRoman(Integer.toString(Character.getNumericValue(chars[0])*10));
+                    String s2 = getArabicRoman(Character.toString(chars[1]));
+                    System.out.println(s1 + s2);
                 }
             }
-        } else {
-                throw new IOException("illegal operation with Roman numerals");
         }
     }
 
@@ -103,6 +98,15 @@ public class Main {
         map.put("VIII", "8");
         map.put("IX", "9");
         map.put("X", "10");
+        map.put("XX", "20");
+        map.put("XXX", "30");
+        map.put("XL", "40");
+        map.put("L", "50");
+        map.put("LX", "60");
+        map.put("LXX", "70");
+        map.put("LXXX", "80");
+        map.put("XC", "90");
+        map.put("C", "100");
 
         map.put("1", "I");
         map.put("2", "II");
@@ -115,7 +119,7 @@ public class Main {
         map.put("9", "IX");
         map.put("10", "X");
         map.put("20", "XX");
-        map.put("30", "XX");
+        map.put("30", "XXX");
         map.put("40", "XL");
         map.put("50", "L");
         map.put("60", "LX");
@@ -127,24 +131,3 @@ public class Main {
         return map.get(in);
     }
 }
-
-/*
-
-I = 1
-V = 5
-X = 10
-L = 50
-C = 100
-
-
-
-
-
-I II III IV V VI VII VIII IX X
-XI XII XIII XIV XV XVI XVII XVIII XIX XX
-XXI XXII XXIII XXIV
-
-
-
-
- */
